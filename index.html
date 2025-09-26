@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Skyline Realty - Nairobi Real Estate</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        .property-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+        }
+        .line-clamp-2 {
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        .search-input {
+            color: #000000 !important;
+            background-color: #ffffff !important;
+        }
+        .search-input::placeholder {
+            color: #6b7280 !important;
+        }
+        html { scroll-behavior: smooth; }
+    </style>
+</head>
+<body class="bg-gray-50 min-h-screen">
+    <header class="bg-white shadow-sm sticky top-0 z-40">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <h1 class="text-2xl font-bold text-blue-600">Skyline Realty</h1>
+                </div>
+                <div class="flex items-center space-x-4">
+                    <div class="hidden sm:flex items-center space-x-2 text-gray-600">
+                        <i class="fas fa-phone text-sm"></i>
+                        <span class="text-sm">+254 700 000 000</span>
+                    </div>
+                    <div class="flex space-x-3">
+                        <a href="https://www.facebook.com/profile.php?id=61581500546415" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-blue-600">
+                            <i class="fab fa-facebook-f text-lg"></i>
+                        </a>
+                        <a href="https://www.instagram.com/skyl_inerealty/" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-pink-500">
+                            <i class="fab fa-instagram text-lg"></i>
+                        </a>
+                        <a href="https://www.tiktok.com/@skylinerealty38" target="_blank" rel="noopener noreferrer" class="text-gray-400 hover:text-black">
+                            <i class="fab fa-tiktok text-lg"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <section id="home" class="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+            <h1 class="text-4xl md:text-6xl font-bold mb-6">Find Your Dream Property in Nairobi</h1>
+            <p class="text-xl md:text-2xl mb-8 opacity-90">Skyline Realty - Your trusted partner in Nairobi's real estate market</p>
+            
+            <div class="max-w-6xl mx-auto bg-white rounded-xl p-6 shadow-2xl">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Location</label>
+                        <div class="relative">
+                            <i class="fas fa-search absolute left-3 top-3 text-gray-400"></i>
+                            <input type="text" id="locationSearch" placeholder="Search location..." class="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Property Type</label>
+                        <select id="propertyType" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                            <option value="all">All Properties</option>
+                            <option value="apartment">Apartments</option>
+                            <option value="house">Houses</option>
+                            <option value="commercial">Commercial</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Min Price (KSh)</label>
+                        <input type="number" id="minPrice" placeholder="Min price" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                    </div>
+                    <div>
+                        <label class="block text-gray-700 text-sm font-medium mb-2">Max Price (KSh)</label>
+                        <input type="number" id="maxPrice" placeholder="Max price" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                    </div>
+                    <div class="flex items-end">
+                        <button id="searchButton" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold text-lg">
+                            Search Properties
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="properties" class="py-16 bg-gray-50">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Featured Properties</h2>
+                <p class="text-xl text-gray-600">Discover our premium listings in Nairobi's most sought-after neighborhoods</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="featuredProperties"></div>
+        </div>
+    </section>
+
+    <section class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">All Properties (<span id="propertyCount">0</span>)</h2>
+                <p class="text-xl text-gray-600">Browse our complete inventory of available properties</p>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="allProperties"></div>
+        </div>
+    </section>
+
+    <section id="contact" class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl md:text-4xl font-bold text-gray-900 mb-4">Contact Us</h2>
+                <p class="text-xl text-gray-600">Get in touch with our expert team today</p>
+            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                <div>
+                    <div class="space-y-6">
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-phone text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Phone</h3>
+                                <p class="text-gray-600">+254 700 000 000</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center">
+                            <div class="bg-blue-100 p-3 rounded-full mr-4">
+                                <i class="fas fa-envelope text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="text-lg font-semibold text-gray-900">Email</h3>
+                                <p class="text-gray-600">info@skylinerealty.co.ke</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="bg-gray-50 p-8 rounded-xl">
+                    <form action="https://formspree.io/f/xldpdapq" method="POST" class="space-y-6">
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">First Name</label>
+                                <input type="text" name="firstname" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-medium text-gray-700 mb-2">Last Name</label>
+                                <input type="text" name="lastname" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Email</label>
+                            <input type="email" name="email" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Phone</label>
+                            <input type="tel" name="phone" class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input">
+                        </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-2">Message</label>
+                            <textarea rows="4" name="message" required class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent search-input"></textarea>
+                        </div>
+                        <button type="submit" class="w-full bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold">
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="bg-gray-900 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center text-gray-400">
+            <p>&copy; 2024 Skyline Realty. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <div id="propertyModal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50 hidden">
+        <div class="bg-white rounded-xl max-w-4xl w-full max-h-screen overflow-y-auto">
+            <div class="relative">
+                <img id="modalImage" src="" alt="" class="w-full h-64 object-cover">
+                <button id="closeModal" class="absolute top-4 right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            <div class="p-6">
+                <h2 id="modalTitle" class="text-3xl font-bold text-gray-800 mb-2"></h2>
+                <div class="flex items-center text-gray-600 mb-4">
+                    <i class="fas fa-map-marker-alt mr-2"></i>
+                    <span id="modalLocation" class="text-lg"></span>
+                </div>
+                <div id="modalPrice" class="text-2xl font-bold text-blue-600 mb-6"></div>
+                <p id="modalDescription" class="text-gray-700 text-lg leading-relaxed mb-6"></p>
+                <div class="flex space-x-4">
+                    <a id="modalPhone" href="tel:+254700000000" class="flex-1 bg-blue-600 text-white py-3 px-6 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold flex items-center justify-center">
+                        <i class="fas fa-phone mr-2"></i> Call Now
+                    </a>
+                    <a id="modalEmail" href="" class="flex-1 bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 transition-colors duration-200 font-semibold flex items-center justify-center">
+                        <i class="fas fa-envelope mr-2"></i> Email Agent
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const properties = [
+            {
+                id: 1,
+                title: "Luxury Apartment in Westlands",
+                location: "Westlands, Nairobi",
+                price: 25000000,
+                priceDisplay: "KSh 25,000,000",
+                type: "apartment",
+                bedrooms: 3,
+                bathrooms: 2,
+                area: "180 sqm",
+                image: "https://placehold.co/400x300/1e40af/ffffff?text=Luxury+Apartment",
+                featured: true,
+                description: "Modern luxury apartment with stunning city views, fully furnished with high-end finishes."
+            },
+            {
+                id: 2,
+                title: "Family Home in Karen",
+                location: "Karen, Nairobi",
+                price: 45000000,
+                priceDisplay: "KSh 45,000,000",
+                type: "house",
+                bedrooms: 4,
+                bathrooms: 3,
+                area: "450 sqm",
+                image: "https://placehold.co/400x300/059669/ffffff?text=Family+Home",
+                featured: true,
+                description: "Spacious family home on 1/2 acre with beautiful garden, swimming pool, and security."
+            },
+            {
+                id: 3,
+                title: "Office Space in CBD",
+                location: "Central Business District, Nairobi",
+                price: 12000000,
+                priceDisplay: "KSh 12,000,000",
+                type: "commercial",
+                bedrooms: 0,
+                bathrooms: 2,
+                area: "200 sqm",
+                image: "https://placehold.co/400x300/dc2626/ffffff?text=Office+Space",
+                featured: false,
+                description: "Prime office space in the heart of Nairobi CBD with excellent accessibility."
+            },
+            {
+                id: 4,
+                title: "Studio Apartment in Kilimani",
+                location: "Kilimani, Nairobi",
+                price: 8500000,
+                priceDisplay: "KSh 8,500,000",
+                type: "apartment",
+                bedrooms: 1,
+                bathrooms: 1,
+                area: "60 sqm",
+                image: "https://placehold.co/400x300/7c3aed/ffffff?text=Studio+Apartment",
+                featured: false,
+                description: "Cozy studio apartment perfect for young professionals, close to amenities and transport."
+            }
+        ];
+
+        const featuredPropertiesDiv = document.getElementById('featuredProperties');
+        const allPropertiesDiv = document.getElementById('allProperties');
+        const propertyCountSpan = document.getElementById('propertyCount');
+        const searchButton = document.getElementById('searchButton');
+        const propertyModal = document.getElementById('propertyModal');
+        const closeModalBtn = document.getElementById('closeModal');
+
+        document.addEventListener('DOMContentLoaded', function() {
+            displayProperties();
+            setupEventListeners();
+        });
+
+        function displayProperties() {
+            const featuredProperties = properties.filter(p => p.featured);
+            const allProperties = properties;
+            featuredPropertiesDiv.innerHTML = featuredProperties.map(property => createPropertyCard(property, true)).join('');
+            allPropertiesDiv.innerHTML = allProperties.map(property => createPropertyCard(property, false)).join('');
+            propertyCountSpan.textContent = allProperties.length;
+        }
+
+        function createPropertyCard(property, isFeatured) {
+            const featuredClass = isFeatured ? 'border-2 border-blue-500' : '';
+            const featuredBadge = isFeatured ? '<div class="absolute top-4 left-4 bg-blue-600 text-white px-3 py-1 rounded-full text-sm font-semibold">Featured</div>' : '';
+            return `
+                <div class="bg-white rounded-xl shadow-lg overflow-hidden property-card ${featuredClass}">
+                    <div class="relative">
+                        <img src="${property.image}" alt="${property.title}" class="w-full h-48 object-cover">
+                        ${featuredBadge}
+                        <div class="absolute bottom-4 right-4 bg-white px-2 py-1 rounded-lg shadow-md">
+                            <span class="text-gray-700 font-semibold">${property.priceDisplay}</span>
+                        </div>
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-bold text-gray-800 mb-2">${property.title}</h3>
+                        <div class="flex items-center text-gray-600 mb-3">
+                            <i class="fas fa-map-marker-alt mr-1"></i>
+                            <span>${property.location}</span>
+                        </div>
+                        <p class="text-gray-600 text-sm mb-4 line-clamp-2">${property.description}</p>
+                        <button onclick="openPropertyModal(${property.id})" class="w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors duration-200 font-semibold">
+                            View Details
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        function openPropertyModal(propertyId) {
+            const property = properties.find(p => p.id === propertyId);
+            if (!property) return;
+            document.getElementById('modalImage').src = property.image;
+            document.getElementById('modalTitle').textContent = property.title;
+            document.getElementById('modalLocation').textContent = property.location;
+            document.getElementById('modalPrice').textContent = property.priceDisplay;
+            document.getElementById('modalDescription').textContent = property.description;
+            document.getElementById('modalEmail').href = `mailto:info@skylinerealty.co.ke?subject=Property Inquiry: ${encodeURIComponent(property.title)}`;
+            propertyModal.classList.remove('hidden');
+        }
+
+        function setupEventListeners() {
+            closeModalBtn.addEventListener('click', () => {
+                propertyModal.classList.add('hidden');
+            });
+            propertyModal.addEventListener('click', (e) => {
+                if (e.target === propertyModal) {
+                    propertyModal.classList.add('hidden');
+                }
+            });
+            searchButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                filterProperties();
+            });
+            document.addEventListener('keypress', function(e) {
+                if (e.key === 'Enter') {
+                    const searchSection = document.getElementById('home');
+                    if (searchSection.contains(e.target)) {
+                        e.preventDefault();
+                        filterProperties();
+                    }
+                }
+            });
+        }
+
+        function filterProperties() {
+            const location = document.getElementById('locationSearch').value.toLowerCase();
+            const type = document.getElementById('propertyType').value;
+            const minPrice = document.getElementById('minPrice').value;
+            const maxPrice = document.getElementById('maxPrice').value;
+            const filtered = properties.filter(property => {
+                const matchesLocation = property.location.toLowerCase().includes(location);
+                const matchesType = type === 'all' || property.type === type;
+                const matchesMinPrice = !minPrice || property.price >= parseInt(minPrice);
+                const matchesMaxPrice = !maxPrice || property.price <= parseInt(maxPrice);
+                return matchesLocation && matchesType && matchesMinPrice && matchesMaxPrice;
+            });
+            allPropertiesDiv.innerHTML = filtered.map(property => createPropertyCard(property, false)).join('');
+            propertyCountSpan.textContent = filtered.length;
+            document.getElementById('properties').scrollIntoView({ behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
